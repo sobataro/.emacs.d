@@ -13,6 +13,14 @@
 
 
 
+;; markdown-mode.el
+(autoload 'markdown-mode "markdown-mode"
+  "major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+
+
+
 ;; 文字コードの設定
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -35,7 +43,7 @@
 
 ;; 行番号を表示
 (global-linum-mode t)
-(setq linum-format "%d ")
+(setq linum-format "%3d ")
 
 ;; カーソル行に下線
 (setq hl-line-face 'underline)
