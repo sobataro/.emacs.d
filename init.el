@@ -1,23 +1,14 @@
-;; load-path を追加する関数
-(defun add-to-load-path (&rest paths)
-  (let (path)
-    (dolist (path paths paths)
-      (let ((default-directory
-              (expand-file-name (concat user-emacs-directory path))))
-        (add-to-list 'load-path default-directory)
-        (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
-            (normal-top-level-add-subdirs-to-load-path))))))
+;; el-get の設定
+(when load-file-name
+  (setq user-emacs-directory (file-name-directory load-file-name)))
 
-;; 各ディレクトリとそのサブディレクトリを load-path に追加
-(add-to-load-path "elisp" "conf" "public_repos")
-
-
-
-;; markdown-mode.el
-(autoload 'markdown-mode "markdown-mode"
-  "major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
 
 
 
@@ -25,7 +16,7 @@
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 
-;; Mac の場合 (ファッキン unicode 正規化)
+;; Mac の場合 (unicode 正規化対策)
 (when (eq system-type 'darwin)
   (require 'ucs-normalize)
   (set-file-name-coding-system 'utf-8-hfs)
@@ -33,10 +24,24 @@
 
 
 
+;; anything
+(el-get-bundle anything
+  (define-key global-map (kbd "C-l") 'anything)
+  (define-key global-map (kbd "C-x b") 'anything-for-files))
+(el-get-bundle anything-config)
+
+
+
+;; markdown-mode
+(el-get-bundle markdown-mode)
+
+
+
 ;; カラーテーマ
-(when (require 'color-theme nil t)
-  (color-theme-initialize)
-  (color-theme-hober))
+(el-get-bundle color-theme
+  (when (require 'color-theme nil t)
+    (color-theme-initialize)
+    (color-theme-hober)))
 
 ;; モードラインにカラム番号を表示
 (column-number-mode t)
