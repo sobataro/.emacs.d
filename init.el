@@ -39,6 +39,7 @@
 (el-get-bundle yaml-mode)
 
 
+
 ;; カラーテーマ
 (el-get-bundle color-theme
   (when (require 'color-theme nil t)
@@ -58,6 +59,19 @@
 
 ;; インデントはスペースのみ
 (setq-default indent-tabs-mode nil)
+
+;; 自動的に行末の空白を削除
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; 行末の空白をハイライト
+(setq-default show-trailing-whitespace t)
+
+;; タブをハイライト
+(add-hook 'font-lock-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil
+             '(("\t" 0 'trailing-whitespace prepend)))))
 
 ;; 対応する括弧のハイライト
 (setq show-paren-delay 0)
