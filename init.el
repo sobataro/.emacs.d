@@ -35,6 +35,8 @@
 ;; markdown-mode
 (el-get-bundle markdown-mode)
 
+;; yaml-mode
+(el-get-bundle yaml-mode)
 
 
 ;; カラーテーマ
