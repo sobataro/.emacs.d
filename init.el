@@ -38,6 +38,8 @@
 ;; yaml-mode
 (el-get-bundle yaml-mode)
 
+;; swift-mode
+(el-get-bundle swift-mode)
 
 
 ;; カラーテーマ
